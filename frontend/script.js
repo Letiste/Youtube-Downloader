@@ -11,7 +11,7 @@
 
 const categories = ['general', 'sport']
 
-(function() {
+;(function() {
     'use strict';
     let isLastKeyControl = false
     document.addEventListener("keydown", event => {
@@ -20,7 +20,11 @@ const categories = ['general', 'sport']
             return
         } else if (isLastKeyControl && event.key === 'y') {
             isLastKeyControl = false
-            createForm()
+            if (categories.length >= 2) {
+                createForm()
+            } else {
+                sendVideoLink(categories)
+            }
         } else {
             isLastKeyControl = false
         }
@@ -57,7 +61,7 @@ function createForm() {
     form.style.left = '20px';
     form.style.fontSize = '15px';
     form.style.backgroundColor = "white"
-    for (const category in categories) {
+    for (const category of categories) {
         form.appendChild(createCheckbox(category));
     }
     const submit = document.createElement('button');
