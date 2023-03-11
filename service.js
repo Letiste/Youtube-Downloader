@@ -4,7 +4,7 @@ let Service = require('node-windows').Service;
 let svc = new Service({
   name:'Youtube Downloader',
   description: 'Script to download Youtube Videos as audio file.',
-  script: '<PATH_TO_MAIN>/main.js>',
+  script: 'D:\\Documents\\userscripts\\youtube-downloader\\main.js',
   nodeOptions: [
     '--harmony',
     '--max_old_space_size=4096'
@@ -23,8 +23,12 @@ svc.on('install',function(){
 svc.on('uninstall',function(){
   console.log('Uninstall complete.');
   console.log('The service exists: ',svc.exists);
+  svc.install()
 });
 
 
 svc.uninstall();
-svc.install();
+
+if (!svc.exists) {
+  svc.install();
+}
