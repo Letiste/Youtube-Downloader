@@ -9,22 +9,26 @@
 // @grant        none
 // ==/UserScript==
 
-const categories = ['general', 'sport']
+/* <div>
+    <input type="checkbox" id="coding" name="interest" value="coding" checked>
+    <label for="coding">Coding</label>
+  </div>
+  <div>
+    <input type="checkbox" id="music" name="interest" value="music">
+    <label for="music">Music</label>
+  </div>
+  */
 
-;(function() {
+  (function() {
     'use strict';
     let isLastKeyControl = false
     document.addEventListener("keydown", event => {
         if (event.key === 'Control') {
             isLastKeyControl = true
             return
-        } else if (isLastKeyControl && event.key === 'y') {
+        } else if (isLastKeyControl && (event.key === 'y' || event.key === 'Y')) {
             isLastKeyControl = false
-            if (categories.length >= 2) {
-                createForm()
-            } else {
-                sendVideoLink(categories)
-            }
+            createForm()
         } else {
             isLastKeyControl = false
         }
@@ -61,9 +65,8 @@ function createForm() {
     form.style.left = '20px';
     form.style.fontSize = '15px';
     form.style.backgroundColor = "white"
-    for (const category of categories) {
-        form.appendChild(createCheckbox(category));
-    }
+    form.appendChild(createCheckbox('general', true));
+    form.appendChild(createCheckbox('sport'));
     const submit = document.createElement('button');
     submit.appendChild(document.createTextNode('submit'));
     const handler = () => {
@@ -75,10 +78,10 @@ function createForm() {
     submit.addEventListener('click', handler);
     form.appendChild(submit);
     document.body.appendChild(form);
-    form.focus()
+    submit.focus()
 }
 
-function createCheckbox(value) {
+function createCheckbox(value, isChecked=false) {
     const element = document.createElement('div');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -86,6 +89,7 @@ function createCheckbox(value) {
     checkbox.name = 'playlist';
     checkbox.value = value;
     checkbox.classList.add('yt-downloader')
+    checkbox.checked = isChecked
     const label = document.createElement('label');
     label.htmlFor = value;
     const text = document.createTextNode(value);
